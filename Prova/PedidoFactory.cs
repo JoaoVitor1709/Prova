@@ -8,6 +8,13 @@ namespace Prova
 {
     public class PedidoFactory : IPedidoFactory
     {
+        private readonly ILogger _logger;
+
+        public PedidoFactory(ILogger logger)
+        {
+            _logger = logger;
+        }
+
         public Pedido CriarPedido(int idPedido, Cliente cliente, List<(Produto produto, int quantidade)> itens)
         {
             if (cliente == null) throw new ArgumentNullException(nameof(cliente));
@@ -20,6 +27,8 @@ namespace Prova
                 var item = new ItemPedido(produto, quantidade);
                 pedido.AdicionarItem(item);
             }
+
+            _logger.Registrar($"Pedido #{idPedido} criado para o cliente {cliente.Nome}");
 
             return pedido;
         }

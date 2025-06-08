@@ -23,10 +23,11 @@ namespace Prova
             Cliente = cliente;
         }
 
-        public void AdicionarItem(ItemPedido item)
+        public void AdicionarItem(ItemPedido item, ILogger logger = null)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             Itens.Add(item);
+            logger?.Registrar($"Item adicionado ao pedido: {item.Produto.Nome} x{item.Quantidade}");
         }
     }
 }

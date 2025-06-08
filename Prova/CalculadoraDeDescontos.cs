@@ -9,10 +9,12 @@ namespace Prova
     public class CalculadoraDeDescontos
     {
         private readonly List<IDescontoStrategy> _estrategias;
+        private readonly ILogger _logger;
 
-        public CalculadoraDeDescontos(List<IDescontoStrategy> estrategias)
+        public CalculadoraDeDescontos(List<IDescontoStrategy> estrategias, ILogger logger)
         {
             _estrategias = estrategias;
+            _logger = logger;
         }
 
         public decimal CalcularDescontoTotal(Pedido pedido)
@@ -23,7 +25,12 @@ namespace Prova
             {
                 foreach (var estrategia in _estrategias)
                 {
-                    descontoTotal += estrategia.CalcularDesconto(item);
+                    var desconto = estrategia.CalcularDesconto(item);
+                    if (desconto > 0)
+                    {
+                        _logger.Registrar($"Desconto aplicado: {item.Produto.Nome} - {desconto:C}");
+                        descontoTotal += desconto;
+                    }
                 }
             }
 
