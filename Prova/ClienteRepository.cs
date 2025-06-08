@@ -8,6 +8,8 @@ namespace Prova
 {
     public class ClienteRepository : InMemoryRepository<Cliente>
     {
-        public ClienteRepository() : base(cliente => cliente.Id) { }
+        public ClienteRepository(ILogger logger) : base(cliente => cliente.Id, logger)
+        {
+        }
     }
 }
